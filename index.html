@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Siaga Bencana | Game Edukasi Mitigasi</title>
+    <meta
+      name="description"
+      content="Game edukasi mitigasi bencana alam untuk siswa SMA dengan skor, timer, streak, dan laporan hasil."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="background-blur blur-one"></div>
+    <div class="background-blur blur-two"></div>
+
+    <header class="topbar">
+      <div class="nav-wrap container">
+        <div class="brand-wrap">
+          <div class="brand-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <h1>Siaga Bencana</h1>
+            <small>Game Edukasi Mitigasi</small>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="badge badge-score" id="score-badge">
+            <i class="fa-solid fa-star"></i>
+            <span id="current-score">Skor: 0</span>
+          </div>
+          <div class="badge badge-timer" id="timer-badge">
+            <i class="fa-solid fa-clock"></i>
+            <span id="time-remaining">15s</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container main-shell">
+      <section id="welcome-screen" class="panel intro-panel active">
+        <div class="intro-icon pulse-soft">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+
+        <p class="eyebrow">Kesiapsiagaan dan mitigasi bencana</p>
+        <h2>Quiz Tanggap Bencana SMA</h2>
+        <p class="subtitle">
+          Uji kemampuanmu dalam mengenali risiko, strategi mitigasi, dan tindakan
+          penyelamatan saat bencana terjadi.
+        </p>
+
+        <div class="info-card">
+          <div class="info-row">
+            <span><i class="fa-solid fa-user-pen"></i> Pengembang</span>
+            <strong>Ihsan Alfaridhi</strong>
+          </div>
+          <div class="info-row">
+            <span><i class="fa-solid fa-user-tie"></i> Dosen Pengampu</span>
+            <strong>Dr. Nofrion, M.Pd</strong>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            <span>Nama peserta</span>
+            <input id="student-name" type="text" value="Ihsan Alfaridhi" maxlength="40" />
+          </label>
+
+          <label>
+            <span>Tingkat kelas</span>
+            <select id="class-select">
+              <option value="10">Kelas 10 SMA</option>
+              <option value="11" selected>Kelas 11 SMA</option>
+              <option value="12">Kelas 12 SMA</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="stats-grid">
+          <div class="mini-stat">
+            <span>Best score</span>
+            <strong id="best-score">0</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Streak</span>
+            <strong id="best-streak">0</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Level</span>
+            <strong id="level-tag">Pemula</strong>
+          </div>
+        </div>
+
+        <button class="primary-btn large-btn" onclick="startGame()">
+          <i class="fa-solid fa-play"></i>
+          Mulai Quiz
+        </button>
+      </section>
+
+      <section id="quiz-screen" class="panel game-panel hidden">
+        <div class="top-panel">
+          <div class="question-meta">
+            <span id="question-number">Pertanyaan 1 / 10</span>
+            <div class="meta-tags">
+              <span id="selected-class-badge" class="pill pill-blue">Kelas 11 SMA</span>
+              <span id="category-tag" class="pill pill-emerald">Gempa Bumi</span>
+            </div>
+          </div>
+
+          <div class="progress-wrap">
+            <div class="progress-bar">
+              <div id="progress-bar" class="progress-fill"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="game-card">
+          <div class="streak-box">
+            <span>Combo</span>
+            <strong id="streak-value">0x</strong>
+          </div>
+
+          <h3 id="question-text">Pertanyaan akan muncul di sini...</h3>
+          <div id="options-container" class="options-container"></div>
+        </div>
+
+        <div id="explanation-box" class="explanation-box hidden">
+          <div id="explanation-title" class="explanation-title"></div>
+          <p id="explanation-text"></p>
+        </div>
+
+        <button id="next-btn" class="primary-btn large-btn hidden" onclick="nextQuestion()">
+          Lanjut
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </section>
+
+      <section id="result-screen" class="panel result-panel hidden">
+        <div id="result-icon" class="result-icon"></div>
+        <p class="eyebrow result-eyebrow">Hasil Quiz</p>
+        <h2>Quiz Selesai!</h2>
+        <p id="result-student-info" class="result-student">Ihsan Alfaridhi | Kelas 11 SMA</p>
+        <p id="result-message" class="result-message">Pesan hasil akan tampil di sini.</p>
+
+        <div class="result-grid">
+          <div class="result-box">
+            <span>Skor akhir</span>
+            <strong id="final-score">0</strong>
+          </div>
+          <div class="result-box">
+            <span>Benar</span>
+            <strong id="correct-count">0 / 10</strong>
+          </div>
+          <div class="result-box">
+            <span>Streak</span>
+            <strong id="final-streak">0x</strong>
+          </div>
+          <div class="result-box">
+            <span>Rank</span>
+            <strong id="rank-label">Pemula</strong>
+          </div>
+        </div>
+
+        <div class="achievement-box" id="achievement-box">
+          <i class="fa-solid fa-medal"></i>
+          <span id="achievement-text">Target: lanjutkan belajar!</span>
+        </div>
+
+        <div class="result-actions">
+          <button class="secondary-btn" onclick="restartGame()">
+            <i class="fa-solid fa-rotate-right"></i>
+            Ulangi Quiz
+          </button>
+          <button class="primary-btn" onclick="downloadReport()">
+            <i class="fa-solid fa-file-arrow-down"></i>
+            Unduh Laporan
+          </button>
+          <button class="accent-btn" onclick="downloadCertificate()">
+            <i class="fa-solid fa-certificate"></i>
+            Sertifikat
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Pengembang: <strong>Ihsan Alfaridhi</strong></p>
+      <p>Dosen Pengampu: <strong>Dr. Nofrion, M.Pd</strong></p>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
+
+
